@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-phpmyadmin
+  labels:
+    app: {{ .Release.Name }}-phpmyadmin
+spec:
+  replicas: {{ .Values.replicaCount.phpmyadmin }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-phpmyadmin
+    spec:
+      initContainers:
+      - name: wait-for-mysql
+        image: busybox
+        command: ['sh', '-c', 'sleep 20']
+      containers:
+        - name: phpmyadmin
+          image: "{{ .Values.phpmyadmin.image }}"
+          ports:
+            - containerPort: {{ .Values.phpmyadmin.port }}
+          env:
+            - name: PMA_HOST
+              value: {{ .Release.Name }}-mysql.default.svc.cluster.local
+            - name: PMA_PORT
+              value: "{{ .Values.mysql.port }}"
+          resources:
+            limits:
+              cpu: {{ .Values.phpmyadmin.resources.limits.cpu }}
+              memory: {{ .Values.phpmyadmin.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.phpmyadmin.resources.requests.cpu }}
+              memory: {{ .Values.phpmyadmin.resources.requests.memory }}

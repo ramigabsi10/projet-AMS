@@ -1,0 +1,77 @@
+# Docker Compose 
+version: '3.3'
+
+# Define services
+services:
+  # Backend service
+  ams_rest:
+    image: ramidokub/amsrest2024
+    ports:
+      - "8080:8080" 
+    container_name: ams_back_cont
+    restart: always
+    depends_on:
+      - db 
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/amsdbrest2024?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: rami
+      SPRING_DATASOURCE_PASSWORD: rami@12ere
+    networks:
+      - ams_app
+
+     
+
+  # Frontend Service 
+  ams_front:
+    image: ramidokub/amsfront2024
+    container_name: ams_front_cont
+    ports:
+      - "8070:80" 
+    restart: always
+    depends_on:
+      - ams_rest
+    networks:
+      - ams_app
+
+
+  # Database Service (Mysql)
+  db:
+    image: mysql:latest
+    container_name: ams_bd_cont
+    volumes:
+      - ams_data:/var/lib/mysql 
+    restart: always
+    environment:
+      MYSQL_DATABASE: amsdbrest2024
+      MYSQL_USER: rami
+      MYSQL_PASSWORD: rami@12ere
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - ams_app
+
+
+  # Database Service (Mysql)
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: app_pmadmin_cont
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8071:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - ams_app
+
+
+# Volumes to be created to persist data  
+volumes:
+  ams_data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  ams_app:
+  
+
+

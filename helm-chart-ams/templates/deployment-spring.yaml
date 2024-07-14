@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-spring
+  labels:
+    app: {{ .Release.Name }}-spring
+spec:
+  replicas: {{ .Values.replicaCount.spring }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-spring
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-spring
+    spec:
+      containers:
+        - name: spring
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+            - name: MYSQL_HOST
+              value: {{ .Release.Name }}-mysql
+            - name: MYSQL_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: db-name
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: password
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "nc -z {{ .Release.Name }}-mysql 3306"]
+            initialDelaySeconds: 40
+            periodSeconds: 15
+          resources:
+            limits:
+              cpu: {{ .Values.backend.resources.limits.cpu }}
+              memory: {{ .Values.backend.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.backend.resources.requests.cpu }}
+              memory: {{ .Values.backend.resources.requests.memory }}

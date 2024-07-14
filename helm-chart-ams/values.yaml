@@ -1,0 +1,69 @@
+replicaCount:
+  spring: 1
+  angular: 1
+  mysql: 1
+  phpmyadmin: 1
+
+mysql:
+  image: mysql:5.7
+  port: 3306
+  database: amsdbrest2024
+  rootPassword: root
+  username: dhia
+  password: dhiasaria
+  pvc:
+    storage: 5Gi
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+backend:
+  image:
+    repository: sipacademy2024/amsrest2024
+    tag: latest
+  port: 8080
+  nodePort: 30150
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+frontend:
+  image:
+    repository: sipacademy2024/amsfront2024
+    tag: latest
+  port: 80
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  port: 80
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+ingress:
+  hosts:
+    frontend: ams-app.com
+    phpmyadmin: pma.ams-app.com
+
+
+    
