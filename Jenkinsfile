@@ -87,13 +87,13 @@ pipeline {
         // Création Image docker et push vers dockerhub backend
         stage('Création d\'une image backend - push vers dockerhub') {
             steps {
-                sh 'docker build -t sipacademy2024/amsrest2024 ${BACKEND_DIR}'
+                sh 'docker build -t ramidokub/amsrest2024 ${BACKEND_DIR}'
 
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW \
                   | docker login -u $DOCKERHUB_CREDENTIALS_USR \
                   --password-stdin'
 
-                sh 'docker push sipacademy2024/amsrest2024'
+                sh 'docker push ramidokub/amsrest2024'
             }
 
                 post {
@@ -111,13 +111,13 @@ pipeline {
         // Création Image docker et push vers dockerhub frontend
         stage('Création d\'une image frontend - push vers dockerhub') {
             steps {
-                sh 'docker build -t sipacademy2024/amsfront2024 ${FRONTEND_DIR}'
+                sh 'docker build -t ramidokub/amsfront2024 ${FRONTEND_DIR}'
 
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW \
                   | docker login -u $DOCKERHUB_CREDENTIALS_USR \
                   --password-stdin'
 
-                sh 'docker push sipacademy2024/amsfront2024'
+                sh 'docker push ramidokub/amsfront2024'
             }
 
                 post {
@@ -155,7 +155,7 @@ pipeline {
 
                   script {
                       //def toAddresses = "ttt@gmail.com,,ttt2@gmail.com"
-                      def toAddresses = "sariadhiaeddine@gmail.com"
+                      def toAddresses = "rami.gabsi5@gmail.com"
                       def subject = "jenkins build:${currentBuild.currentResult}-${BUILD_NUMBER}: ${env.JOB_NAME}"
                       def body = "${currentBuild.currentResult}: Job ${env.JOB_NAME}.Check the attachement to view the details."
                             
@@ -163,7 +163,7 @@ pipeline {
                               to: toAddresses,
                               subject: subject,
                               body: body,
-                              replyTo: "sariadhiaeddine@gmail.com",
+                              replyTo: "rami.gabsi5@gmail.com",
                               mimeType: 'text/html',
                               attachLog: true,
                                     )
