@@ -9,8 +9,8 @@ mysql:
   port: 3306
   database: amsdbrest2024
   rootPassword: root
-  username: dhia
-  password: dhiasaria
+  username: rami
+  password: rami@12ere
   pvc:
     storage: 5Gi
   resources:
@@ -23,7 +23,7 @@ mysql:
 
 backend:
   image:
-    repository: sipacademy2024/amsrest2024
+    repository: ramidokub/amsrest2024
     tag: latest
   port: 8080
   nodePort: 30150
@@ -37,7 +37,7 @@ backend:
 
 frontend:
   image:
-    repository: sipacademy2024/amsfront2024
+    repository: ramidokub/amsfront2024
     tag: latest
   port: 80
   resources:
