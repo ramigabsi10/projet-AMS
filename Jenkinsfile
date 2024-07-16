@@ -2,11 +2,6 @@ pipeline {
   
           agent any
 
-          tools {
-           maven 'maven384'
-           nodejs "nodejs20100"
-          }
-
           environment {
             DOCKERHUB_CREDENTIALS = credentials('dockerhub_cred')
             BACKEND_DIR = 'amsRest2024'
