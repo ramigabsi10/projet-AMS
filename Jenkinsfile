@@ -25,7 +25,7 @@ pipeline {
            stage('Build  Projet spring') {
            steps {
            dir(env.BACKEND_DIR) {
-            sh 'mvn clean install -DskipTests'
+            bat 'mvn clean install -DskipTests'
                }
              }
           }
