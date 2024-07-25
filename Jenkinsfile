@@ -12,7 +12,7 @@ pipeline {
             BACKEND_DIR = 'amsRest2024'
             FRONTEND_DIR = 'amsFront2024'
             SONAR_HOST_URL = 'http://localhost:9000'
-            SONAR_TOKEN_REST = 'd6e47c461e172bfbdec18680ee6de233843170c1'       
+            SONAR_TOKEN_REST = '87cd7f7c09672196b840b2997a0da66b010e9220'       
             KUBECONFIG = credentials('kubeconfig-minikube') 
            }
 
@@ -36,7 +36,7 @@ pipeline {
         stage('SonarQube Analysis - Spring') {
             steps {
                 dir(env.BACKEND_DIR) {
-                    sh """
+                    bat """
                         mvn sonar:sonar \
                             -Dsonar.projectKey=amsRest2024 \
                             -Dsonar.host.url=${env.SONAR_HOST_URL} \
@@ -50,7 +50,7 @@ pipeline {
         stage('SonarQube Analysis - Angular') {
             steps {
                 dir(env.FRONTEND_DIR) {
-                    sh """
+                    bat """
                         npm install
                         npm run sonar
                     """
@@ -87,20 +87,20 @@ pipeline {
         // Création Image docker et push vers dockerhub backend
         stage('Creation d\'une image backend - push vers dockerhub') {
             steps {
-                sh 'docker build -t ramidokub/amsrest2024 ${BACKEND_DIR}'
+                bat 'docker build -t ramidokub/amsrest2024 ${BACKEND_DIR}'
 
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW \
+                bat 'echo $DOCKERHUB_CREDENTIALS_PSW \
                   | docker login -u $DOCKERHUB_CREDENTIALS_USR \
                   --password-stdin'
 
-                sh 'docker push ramidokub/amsrest2024'
+                bat 'docker push ramidokub/amsrest2024'
             }
 
                 post {
 
                   always {
 
-                  sh 'docker logout'
+                  bat 'docker logout'
 
                          }
 
@@ -111,20 +111,20 @@ pipeline {
         // Création Image docker et push vers dockerhub frontend
         stage('Creation d\'une image frontend - push vers dockerhub') {
             steps {
-                sh 'docker build -t ramidokub/amsfront2024 ${FRONTEND_DIR}'
+                bat 'docker build -t ramidokub/amsfront2024 ${FRONTEND_DIR}'
 
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW \
+                bat 'echo $DOCKERHUB_CREDENTIALS_PSW \
                   | docker login -u $DOCKERHUB_CREDENTIALS_USR \
                   --password-stdin'
 
-                sh 'docker push ramidokub/amsfront2024'
+                bat 'docker push ramidokub/amsfront2024'
             }
 
                 post {
 
                   always {
 
-                  sh 'docker logout'
+                  bat 'docker logout'
 
                          }
 
@@ -139,7 +139,7 @@ pipeline {
                     withCredentials([
                         file(credentialsId: 'kubeconfig-minikube', variable: 'KUBECONFIG')
                     ]) {
-                        sh 'helm upgrade --install ams-app ./helm-chart-ams'
+                        bat 'helm upgrade --install ams-app ./helm-chart-ams'
                     }
                 }
               }
