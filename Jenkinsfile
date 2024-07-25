@@ -80,7 +80,7 @@ pipeline {
         }
 
         // Création Image docker et push vers dockerhub backend
-        stage('Création d\'une image backend - push vers dockerhub') {
+        stage('Creation d\'une image backend - push vers dockerhub') {
             steps {
                 sh 'docker build -t ramidokub/amsrest2024 ${BACKEND_DIR}'
 
@@ -104,7 +104,7 @@ pipeline {
 
 
         // Création Image docker et push vers dockerhub frontend
-        stage('Création d\'une image frontend - push vers dockerhub') {
+        stage('Creation d\'une image frontend - push vers dockerhub') {
             steps {
                 sh 'docker build -t ramidokub/amsfront2024 ${FRONTEND_DIR}'
 
