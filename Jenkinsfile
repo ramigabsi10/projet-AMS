@@ -4,8 +4,8 @@ pipeline {
 
           environment {
             DOCKERHUB_CREDENTIALS = credentials('dockerhub_cred')
-            BACKEND_DIR = 'amsrest2024'
-            FRONTEND_DIR = 'amsfront2024'
+            BACKEND_DIR = 'amsRest2024'
+            FRONTEND_DIR = 'amsFront2024'
             SONAR_HOST_URL = 'http://localhost:9000'
             SONAR_TOKEN_REST = 'd6e47c461e172bfbdec18680ee6de233843170c1'       
             KUBECONFIG = credentials('kubeconfig-minikube') 
