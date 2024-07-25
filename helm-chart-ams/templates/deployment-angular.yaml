@@ -17,7 +17,7 @@ spec:
       initContainers:
       - name: check-spring-ready
         image: curlimages/curl:7.68.0
-        command: ['sh', '-c', 'until curl -sf http://192.168.59.100:30150/; do echo "Waiting for spring..."; sleep 5; done;']
+        command: ['sh', '-c', 'until curl -sf http://192.168.217.128:30150/; do echo "Waiting for spring..."; sleep 5; done;']
       containers:
         - name: frontend
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
