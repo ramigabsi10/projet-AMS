@@ -59,30 +59,7 @@ pipeline {
         }
 
 
-        // Upload the .jar file to Nexus repository
-        stage('Upload jar to nexus') {
-            steps {
-                dir(env.BACKEND_DIR) {
-                    script {
-                        nexusArtifactUploader artifacts: [
-                            [
-                                artifactId: 'ams_rest',
-                                classifier: '',
-                                file: 'target/ams_rest-0.0.1-SNAPSHOT.jar',
-                                type: 'jar'
-                            ]
-                        ],
-                        credentialsId: 'nexus_cred',
-                        groupId: 'com.sip',
-                        nexusUrl: 'localhost:8081',
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        repository: 'ams_rest',
-                        version: '0.0.1-SNAPSHOT'
-                    }
-                }
-            }
-        }
+       
 
         // Création Image docker et push vers dockerhub backend
         stage('Creation d\'une image backend - push vers dockerhub') {
@@ -147,7 +124,34 @@ pipeline {
    
    
     }
-
+	
+	
+		 // Upload the .jar file to Nexus repository
+        stage('Upload jar to nexus') {
+            steps {
+                dir(env.BACKEND_DIR) {
+                    script {
+                        nexusArtifactUploader artifacts: [
+                            [
+                                artifactId: 'ams_rest',
+                                classifier: '',
+                                file: 'target/ams_rest-0.0.1-SNAPSHOT.jar',
+                                type: 'jar'
+                            ]
+                        ],
+                        credentialsId: 'nexus_cred',
+                        groupId: 'com.sip',
+                        nexusUrl: 'localhost:8081',
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        repository: 'ams_rest',
+                        version: '0.0.1-SNAPSHOT'
+                    }
+                }
+            }
+        }
+		
+		
           // Mail notification
           post {
                       
